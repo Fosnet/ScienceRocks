@@ -90,6 +90,25 @@ function dragended() {
   startRotation(rotationDelay)
 }
 
+
+
+function drawPoints() {
+
+  var points = [
+    { lat: 0, lon: 0 },
+    { lat: 30, lon: -90 },
+  ];
+
+  context.fillStyle = 'red';
+
+  for (var i = 0; i < points.length; i++) {
+    var coords = projection([points[i].lon, points[i].lat]);
+    context.beginPath();
+    context.arc(coords[0], coords[1], 5, 0, 2 * Math.PI);
+    context.fill();
+  }
+}
+
 function render() {
   context.clearRect(0, 0, width, height)
   
@@ -103,6 +122,7 @@ function render() {
   if (currentCountry) {
     colour(currentCountry, colorCountry)
   }
+  drawPoints(); 
 }
 
 function fill(obj, image) {
