@@ -118,7 +118,7 @@ function rotate(elapsed) {
   now = d3.now()
   diff = now - lastTime
   if (diff < elapsed) {
-    rotation = projection.rotate()
+    var rotation = projection.rotate()
     rotation[0] += diff * degPerMs
     projection.rotate(rotation)
     render()
