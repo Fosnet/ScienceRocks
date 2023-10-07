@@ -51,16 +51,40 @@ class FireballData(NasaDataObject):
         df['longitude'] = df.apply(lambda row: row['lon'] if row['lon-dir'] == 'E' else -row['lon'], axis=1)
         df['altitude'] = df['alt'] * 1000
         df['velocity'] = df['vel'] * 1000
-        df['notes'] = 'Altitude:' + df['altitude'].astype(str) + 'm, Velocity: ' + df['velocity'].astype(str) + 'm/s, Radiated energy: ' + df['radiated-energy'].astype(str) + '10^10J, Impact energy: ' + df['radiated-energy'].astype(str) + 'kt'
+        df['notes'] = 'Altitude: ' + df['altitude'].astype(str) + 'm, Velocity: ' + df['velocity'].astype(str) + 'm/s, Radiated energy: ' + df['radiated-energy'].astype(str) + '10^10J, Impact energy: ' + df['radiated-energy'].astype(str) + 'kt'
 
         self.data = df[['date', 'latitude', 'longitude', 'altitude', 'velocity', 'radiated-energy', 'impact-energy', 'notes']]
+        return self.data
+
+
+class CoronalMassEjection(NasaDataObject):
+    def __init__(self):
+        super().__init__()
+        self.base_url = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CMEAnalysis?"
+        self.notes = None
+
+    def read_data(self, raw_data):
+        """
+        Reads solar flare data in this format: https://ccmc.gsfc.nasa.gov/tools/DONKI/#coronal-mass-ejection--cme-. Returns the following:
+          - latitude
+          - longitude
+          - half-angle
+          - speed
+        """
+        df = pd.DataFrame(raw_data)
+        df = df.rename(columns={"halfAngle": "half-angle", "time21_5": 'date'})
+        df['date'] = pd.to_datetime(df['date'])
+
+        df['notes'] = 'Speed: ' + df['speed'].astype(str) + 'm/s, Half angle: ' + df['half-angle'].astype(str) + ', Other information: ' + df['note'].astype(str)
+
+        self.data = df[['date', 'latitude', 'longitude', 'speed', 'half-angle', 'notes']]
         return self.data
 
 
 class DataType(Enum):
     # GEOMAGNETIC_STORM = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/GST?"
     # SOLAR_FLARE = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?"
-    # CORONAL_MASS_EJECTION = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CME?"
+    CORONAL_MASS_EJECTION = CoronalMassEjection()
     FIREBALL = FireballData()
 
 
@@ -87,10 +111,9 @@ def get_data(start_date: date, end_date: date, data_type_object: DataType):
 
 
 if __name__ == '__main__':
-    start_date = date(year=2023, month=1, day=1)
-
+    start_date = date(year=2023, month=10, day=1)
     end_date = date.today()
-    data_type = DataType.FIREBALL
+    data_type = DataType.CORONAL_MASS_EJECTION
 
     data = get_data(start_date, end_date, data_type)
 

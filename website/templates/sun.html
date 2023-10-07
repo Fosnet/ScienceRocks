@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %} Sun {% endblock %}
+
+{% block content %}
+
+
+
+<script src="http://d3js.org/d3.v4.min.js"></script>
+<script src="https://unpkg.com/topojson@3"></script>
+
+
+
+<script>
+    var points = {{ data|safe }};
+    var script = document.createElement('script');
+    script.src = '/static/index.js';
+    script.async = false;
+    document.head.appendChild(script);
+</script>
+
+
+
+
+<div class="stars">
+  <h2 id="current"></h2>
+  <div class="clouds">
+    <canvas id="globe"></canvas>
+  </div>
+</div>
+
+
+
+{% endblock %}
