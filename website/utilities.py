@@ -43,24 +43,50 @@ class FireballData(NasaDataObject):
         df['lon'] = pd.to_numeric(df['lon'])
         df['alt'] = pd.to_numeric(df['alt'])
         df['vel'] = pd.to_numeric(df['vel'])
-        df['radiated-energy'] = pd.to_numeric(df['energy'])
-        df['impact-energy'] = pd.to_numeric(df['impact-e'])
+        df['radiated_energy'] = pd.to_numeric(df['energy'])
+        df['impact_energy'] = pd.to_numeric(df['impact-e'])
+        df['date_str'] = df['date']
         df['date'] = pd.to_datetime(df['date'])
 
         df['latitude'] = df.apply(lambda row: row['lat'] if row['lat-dir'] == 'N' else -row['lat'], axis=1)
         df['longitude'] = df.apply(lambda row: row['lon'] if row['lon-dir'] == 'E' else -row['lon'], axis=1)
         df['altitude'] = df['alt'] * 1000
         df['velocity'] = df['vel'] * 1000
-        df['notes'] = 'Altitude:' + df['altitude'].astype(str) + 'm, Velocity: ' + df['velocity'].astype(str) + 'm/s, Radiated energy: ' + df['radiated-energy'].astype(str) + '10^10J, Impact energy: ' + df['radiated-energy'].astype(str) + 'kt'
+        df['notes'] = 'Altitude: ' + df['altitude'].astype(str) + ' m \n Velocity: ' + df['velocity'].astype(str) + ' m/s \n Radiated energy: ' + df['radiated_energy'].astype(str) + '×10^10 J \n Impact energy: ' + df['radiated_energy'].astype(str) + 'kt'
 
-        self.data = df[['date', 'latitude', 'longitude', 'altitude', 'velocity', 'radiated-energy', 'impact-energy', 'notes']]
+        self.data = df[['date', 'date_str', 'latitude', 'longitude', 'altitude', 'velocity', 'radiated_energy', 'impact_energy', 'notes']]
+        return self.data
+
+
+class CoronalMassEjection(NasaDataObject):
+    def __init__(self):
+        super().__init__()
+        self.base_url = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CMEAnalysis?"
+        self.notes = None
+
+    def read_data(self, raw_data):
+        """
+        Reads solar flare data in this format: https://ccmc.gsfc.nasa.gov/tools/DONKI/#coronal-mass-ejection--cme-. Returns the following:
+          - latitude
+          - longitude
+          - half-angle
+          - speed
+        """
+        df = pd.DataFrame(raw_data)
+        df = df.rename(columns={"halfAngle": "half-angle", "time21_5": 'date'})
+        df['date_str'] = df['date']
+        df['date'] = pd.to_datetime(df['date'])
+
+        df['notes'] = 'Speed: ' + df['speed'].astype(str) + ' m/s \n Half angle: ' + df['half-angle'].astype(str) + '\n Other information: ' + df['note'].astype(str)
+
+        self.data = df[['date', 'date_str', 'latitude', 'longitude', 'speed', 'half-angle', 'notes']]
         return self.data
 
 
 class DataType(Enum):
     # GEOMAGNETIC_STORM = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/GST?"
     # SOLAR_FLARE = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/FLR?"
-    # CORONAL_MASS_EJECTION = "https://kauai.ccmc.gsfc.nasa.gov/DONKI/WS/get/CME?"
+    CORONAL_MASS_EJECTION = CoronalMassEjection()
     FIREBALL = FireballData()
 
 

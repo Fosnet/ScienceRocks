@@ -1,7 +1,53 @@
 
+.content {
+  background-color: black;
+  color: white;
+  margin: 0;
+  overflow: hidden;
+}
+
 #globe {
   cursor: move;
 }
+
+.navbar {
+  z-index: 1000;
+}
+
+body {
+    background-color: black;
+}
+
+
+
+.container {
+  display: flex; /* Use Flexbox to arrange items */
+  width: 100%; /* Make the canvas take the entire width of its container */
+  height: 100%; /* Make the canvas take the entire height of its container */
+}
+
+.panel {
+  flex: 1; /* Allow the panel to grow and take available space */
+  background-color: #550000; /* Adjust styling as needed */
+  color: white; /* Adjust text color as needed */
+}
+
+.canvas-container {
+    flex: 4;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center; /* Vertically center the canvas within the container */
+  justify-content: center; /* Horizontally center the canvas within the container */
+}
+
+canvas {
+  max-width: 100%; /* Limit the canvas width to its container's width */
+  max-height: 100%; /* Limit the canvas height to its container's height */
+  width: auto; /* Allow the canvas to adjust its width */
+  height: auto; /* Allow the canvas to adjust its height */
+}
+
 
 #current {
   position: absolute;
