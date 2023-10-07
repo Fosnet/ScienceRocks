@@ -1,3 +1,35 @@
 {% extends "base.html" %}
 {% block title %} Earth {% endblock %}
-{% block content %} Earth content goes here {% endblock %}
+
+ <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+    {
+        "imports": {
+        "three": "https://unpkg.com/three@0.154.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.154.0/examples/jsm/"
+        }
+    }
+    </script>
+
+
+{% block content %}
+
+
+        <div class="header">
+            <h1>3D Earth</h1>
+            <p1 id="displayText">Sample</p1>
+            <p2 id="cordText">Right Click for Coordinates</p2>
+        </div>
+
+        <div id="viz"></div>
+
+  <script type="module" src="./static/index.js"></script>
+
+
+
+
+
+
+
+{% endblock %}
