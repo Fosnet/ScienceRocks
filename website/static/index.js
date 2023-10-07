@@ -4,10 +4,10 @@ var rotationDelay = 3000
 var scaleFactor = 0.6
 var degPerSec = 6
 var angles = { x: -20, y: 40, z: 0 }
-var colorWater = '#181236'
-var colorLand = '#F19BFE'
-var colorGraticule = '#181236'
-var colorCountry = '#F6C1BC'
+var colorWater = '#6699FF'
+var colorLand = '#7cfc00'
+var colorGraticule = '#696969'
+var colorCountry = '#006400'
 
 
 function enter(country) {
