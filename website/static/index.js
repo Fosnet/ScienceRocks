@@ -83,26 +83,37 @@ function dragended() {
 
 
 function drawPoints() {
-
-  var points = [
-    { lat: 0, lon: 0 },
-    { lat: 30, lon: -90 },
-  ];
-
   context.fillStyle = 'red';
 
   for (var i = 0; i < points.length; i++) {
-    var coords = projection([points[i].lon, points[i].lat]);
+    var coords = projection([points[i].longitude, points[i].latitude]);
     context.beginPath();
     context.arc(coords[0], coords[1], 5, 0, 2 * Math.PI);
     context.fill();
 
-    canvas.on('click', function() {
-      console.log('Clicked point: (', coords, ')');
-      console.log('Put replacement function here')
-    });
   }
 }
+
+
+//    if (points[i].clicked) {
+//      context.fillStyle = 'yellow'; // Change color to yellow if clicked
+//    }
+//
+//    context.fill();
+//
+//    var point = points[i];
+//
+//    canvas.on('click', function () {
+//      if (!point.clicked) {
+//        point.clicked = true;
+//        updatePanelContent(point);
+//        render(); // Call render to update the canvas with the new color
+//      }
+//    });
+
+
+
+
 
 function render() {
   context.clearRect(0, 0, width, height)
@@ -208,12 +219,31 @@ function getCountry(event) {
   })
 }
 
+function updatePanelContent(point) {
+    if (typeof point !== 'undefined') {
+        console.log(point)
+        console.log(point.date_str)
+
+        const updatedContent = point.notes
+
+        document.getElementById("panel-title").textContent = point.date_str;
+        document.getElementById("panel-content").textContent = updatedContent;
+
+
+    }
+}
+
 
 //
 // Initialization
 //
 
 setAngles()
+
+
+// Initial content
+updatePanelContent();
+
 
 canvas
   .call(d3.drag()
@@ -222,6 +252,46 @@ canvas
     .on('end', dragended)
   )
   .on('mousemove', mousemove)
+
+
+
+var selectedPoint = null;
+var minDistance = Infinity;
+
+canvas.on('mousemove', function (event) {
+    var mouseCoords = d3.mouse(this)
+  var mouseX = mouseCoords[0]
+  var mouseY = mouseCoords[1]
+
+  for (var i = 0; i < points.length; i++) {
+    var point = points[i];
+    var coords = projection([point.longitude, point.latitude]);
+    var pointX = coords[0];
+    var pointY = coords[1];
+
+    var distance = Math.sqrt(Math.pow(pointX - mouseX, 2) + Math.pow(pointY - mouseY, 2));
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      selectedPoint = point;
+    }
+  }
+});
+
+canvas.on('click', function () {
+  if (selectedPoint) {
+    // Handle the click on the selected point
+    console.log('Selected Point:', selectedPoint);
+
+    // You can update the panel content or perform other actions here
+    updatePanelContent(selectedPoint);
+
+    // Reset the selected point and minimum distance
+    selectedPoint = null;
+    minDistance = Infinity;
+  }
+});
+
 
 loadData(function (world, cList, airports) {
   land = topojson.feature(world, world.objects.land)
