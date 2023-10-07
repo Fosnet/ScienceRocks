@@ -10,7 +10,7 @@
 <script>
     var points = {{ data|safe }};
     var script = document.createElement('script');
-    script.src = '/static/index.js';
+    script.src = '/static/sun.js';
     script.async = false;
     document.head.appendChild(script);
 </script>
@@ -37,6 +37,7 @@
   </div>
 </div>
 
+<script defer type="module" src="{{url_for('static', filename='sun.js')}}"></script>
 
 
 

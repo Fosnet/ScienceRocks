@@ -2,7 +2,7 @@ from datetime import date
 
 from flask import Blueprint, render_template
 
-from utilities import DataType, get_data
+from .utilities import DataType, get_data
 
 views = Blueprint('views', __name__)
 
