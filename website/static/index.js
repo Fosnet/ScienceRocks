@@ -212,8 +212,8 @@ canvas
 
 loadData(function (world, cList, airports) {
   land = topojson.feature(world, world.objects.land)
-  countries = topojson.feature(world, world.objects.countries)
-  countryList = cList
+  // countries = topojson.feature(world, world.objects.countries)
+  // countryList = cList
 
   window.addEventListener('resize', scale)
   scale()
