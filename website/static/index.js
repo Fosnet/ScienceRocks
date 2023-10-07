@@ -45,6 +45,32 @@ var currentCountry
 // Functions
 //
 
+
+function drawPoints() {
+  context.fillStyle = 'red';
+
+  for (var i = 0; i < points.length; i++) {
+    var point = points[i];
+
+    if (isPointVisible(point.latitude, point.longitude)) {
+      var coords = projection([point.longitude, point.latitude]);
+      context.beginPath();
+      context.arc(coords[0], coords[1], 5, 0, 2 * Math.PI);
+      context.fill();
+    }
+  }
+}
+
+
+function isPointVisible(lat, lon) {
+  var rotation = projection.rotate();
+  var globeLon = rotation[0];
+
+  lon = (lon + 180) % 360 - 180;
+  return Math.abs(lon - globeLon) < 90;
+}
+
+
 function setAngles() {
   var rotation = projection.rotate()
   rotation[0] = angles.y
@@ -103,6 +129,7 @@ function render() {
   if (currentCountry) {
     colour(currentCountry, colorCountry)
   }
+  drawPoints();
 }
 
 function fill(obj, image) {
