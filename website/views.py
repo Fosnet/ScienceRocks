@@ -8,9 +8,9 @@ def home():
 
 @views.route('/earth')
 def earth(): 
-    return "<h1>earth page</h1>"
+    return render_template("earth.html")
 
 @views.route('/mars')
 def mars():
-    return "<h1>mars page</h1>"
+    return render_template("mars.html")
 
