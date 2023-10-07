@@ -8,16 +8,6 @@ var colorGraticule = '#696969'
 var colorCountry = '#228B22'
 
 
-function enter(country) {
-  var country = countryList.find(function (c) {
-    return c.id === country.id
-  })
-  current.text(country && country.name || ' ')
-}
-
-function leave(country) {
-  current.text(' ')
-}
 
 //
 // Variables
@@ -106,6 +96,11 @@ function drawPoints() {
     context.beginPath();
     context.arc(coords[0], coords[1], 5, 0, 2 * Math.PI);
     context.fill();
+
+    canvas.on('click', function() {
+      console.log('Clicked point: (', coords, ')');
+      console.log('Put replacement function here')
+    });
   }
 }
 
@@ -190,7 +185,6 @@ function mousemove() {
   var c = getCountry(this)
   if (!c) {
     if (currentCountry) {
-      leave(currentCountry)
       currentCountry = undefined
       render()
     }
@@ -201,7 +195,6 @@ function mousemove() {
   }
   currentCountry = c
   render()
-  enter(c)
 }
 
 function getCountry(event) {
