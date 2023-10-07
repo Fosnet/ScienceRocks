@@ -1,7 +1,9 @@
+import versor from "https://cdn.skypack.dev/versor@0.2";
+
 var rotationDelay = 3000
 var scaleFactor = 0.6
 var degPerSec = 6
-var angles = { x: -20, y: 40, z: 0}
+var angles = { x: -20, y: 40, z: 0 }
 var colorWater = '#181236'
 var colorLand = '#F19BFE'
 var colorGraticule = '#181236'
@@ -9,14 +11,14 @@ var colorCountry = '#F6C1BC'
 
 
 function enter(country) {
-  var country = countryList.find(function(c) {
+  var country = countryList.find(function (c) {
     return c.id === country.id
   })
-  current.text(country && country.name || '')
+  current.text(country && country.name || ' ')
 }
 
 function leave(country) {
-  current.text('')
+  current.text(' ')
 }
 
 //
@@ -26,7 +28,7 @@ function leave(country) {
 var current = d3.select('#current')
 var canvas = d3.select('#globe')
 var context = canvas.node().getContext('2d')
-var water = {type: 'Sphere'}
+var water = { type: 'Sphere' }
 var projection = d3.geoOrthographic().precision(0.1)
 var graticule = d3.geoGraticule10()
 var path = d3.geoPath(projection).context(context)
@@ -127,9 +129,9 @@ function rotate(elapsed) {
 }
 
 function loadData(cb) {
-  d3.json('https://unpkg.com/world-atlas@1/world/110m.json', function(error, world) {
+  d3.json('https://unpkg.com/world-atlas@1/world/110m.json', function (error, world) {
     if (error) throw error
-    d3.tsv('https://gist.githubusercontent.com/mbostock/4090846/raw/07e73f3c2d21558489604a0bc434b3a5cf41a867/world-country-names.tsv', function(error, countries) {
+    d3.tsv('https://gist.githubusercontent.com/mbostock/4090846/raw/07e73f3c2d21558489604a0bc434b3a5cf41a867/world-country-names.tsv', function (error, countries) {
       if (error) throw error
       cb(world, countries)
     })
@@ -172,9 +174,9 @@ function mousemove() {
 
 function getCountry(event) {
   var pos = projection.invert(d3.mouse(event))
-  return countries.features.find(function(f) {
-    return f.geometry.coordinates.find(function(c1) {
-      return polygonContains(c1, pos) || c1.find(function(c2) {
+  return countries.features.find(function (f) {
+    return f.geometry.coordinates.find(function (c1) {
+      return polygonContains(c1, pos) || c1.find(function (c2) {
         return polygonContains(c2, pos)
       })
     })
@@ -193,14 +195,14 @@ canvas
     .on('start', dragstarted)
     .on('drag', dragged)
     .on('end', dragended)
-   )
+  )
   .on('mousemove', mousemove)
 
-loadData(function(world, cList, airports) {
+loadData(function (world, cList, airports) {
   land = topojson.feature(world, world.objects.land)
   countries = topojson.feature(world, world.objects.countries)
   countryList = cList
-  
+
   window.addEventListener('resize', scale)
   scale()
   autorotate = d3.timer(rotate)
