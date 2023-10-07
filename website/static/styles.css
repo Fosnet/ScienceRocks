@@ -5,7 +5,7 @@
 
 #current {
   position: absolute;
-  color: #F6C1BC;
+  color: #0f100f;
   font-family: Verdana;
   margin-left: 40%;
   margin-top: 2%;
@@ -118,3 +118,4 @@
   -webkit-animation:move-clouds-back 200s linear infinite;
   animation:move-clouds-back 200s linear infinite;
 }
+
