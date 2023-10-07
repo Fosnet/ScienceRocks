@@ -4,10 +4,8 @@ var rotationDelay = 3000
 var scaleFactor = 0.6
 var degPerSec = 6
 var angles = { x: -20, y: 40, z: 0 }
-var colorWater = '#6699FF'
-var colorLand = '#7cfc00'
 var colorGraticule = '#696969'
-var colorCountry = '#006400'
+var colorCountry = '#228B22'
 
 
 function enter(country) {
@@ -94,15 +92,29 @@ function dragended() {
 
 function render() {
   context.clearRect(0, 0, width, height)
-  fill(water, colorWater)
+  
+  var water_image = document.createElement("img");
+  water_image.setAttribute("src", "https://i.pinimg.com/564x/2d/6c/46/2d6c46b7f465abfe74a65f420a102a31.jpg");
+  fill(water, water_image)
   stroke(graticule, colorGraticule)
-  fill(land, colorLand)
+  var land_image = document.createElement("img");
+  land_image.setAttribute("src", "https://as2.ftcdn.net/jpg/03/76/96/49/160_F_376964902_mneBDgYwsNtxmtIfl4wpy4c4NiNh6wqj.jpg");
+  fill(land, land_image)
   if (currentCountry) {
-    fill(currentCountry, colorCountry)
+    colour(currentCountry, colorCountry)
   }
 }
 
-function fill(obj, color) {
+function fill(obj, image) {
+  context.beginPath()
+  path(obj)
+  const pattern = context.createPattern(image, "repeat");
+  context.fillStyle = pattern;
+  context.fill();
+  
+}
+
+function colour(obj, color) {
   context.beginPath()
   path(obj)
   context.fillStyle = color
