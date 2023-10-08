@@ -214,19 +214,28 @@ function getCountry(event) {
 }
 
 function updatePanelContent(point) {
-    if (typeof point !== 'undefined') {
-        console.log(point)
-        console.log(point.date_str)
+  if (typeof point !== 'undefined') {
+      console.log(point)
+      console.log(point.date_str)
 
-        const updatedContent = point.notes
+      const updatedContent = point.notes
+      console.log(">>> this is updated content \n", updatedContent);
+      const splitLines = str => str.split(/\r?\n/);
+      var display_content = splitLines(updatedContent);
+      let list = document.getElementById("panel-content")
+      for (var i =0 ; i < display_content.length; i++) {
+        let li = document.createElement('li');
+        li.innerText = display_content[i];
+        list.appendChild(li);
+      }
 
-        document.getElementById("panel-title").textContent = point.date_str;
-        document.getElementById("panel-content").textContent = updatedContent;
+      document.getElementById("panel-title").innerHTML = "Fireball : ";
+      document.getElementById("panel-title").textContent += point.date_str;
+      // document.getElementById("panel-content").textContent = updatedContent;
 
 
-    }
+  }
 }
-
 
 //
 // Initialization
@@ -275,6 +284,7 @@ canvas.on('mousemove', function (event) {
 canvas.on('click', function () {
   if (selectedPoint) {
     // Handle the click on the selected point
+    document.getElementById("panel-content").innerHTML = "";
     console.log('Selected Point:', selectedPoint);
 
     // You can update the panel content or perform other actions here

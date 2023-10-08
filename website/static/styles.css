@@ -27,9 +27,10 @@ body {
 }
 
 .panel {
-  flex: 1; /* Allow the panel to grow and take available space */
+  flex: 1.5; /* Allow the panel to grow and take available space */
   background-color: #c23636; /* Adjust styling as needed */
   color: white; /* Adjust text color as needed */
+  padding: 1rem;
 }
 
 .canvas-container {
