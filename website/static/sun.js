@@ -229,7 +229,7 @@ function updatePanelContent(point) {
         list.appendChild(li);
       }
 
-      document.getElementById("panel-title").innerHTML = "Fireball : ";
+      document.getElementById("panel-title").innerHTML = "Coronal Mass Ejections  : ";
       document.getElementById("panel-title").textContent += point.date_str;
       // document.getElementById("panel-content").textContent = updatedContent;
 

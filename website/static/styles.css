@@ -33,6 +33,11 @@ body {
   padding: 1rem;
 }
 
+.card {
+  margin-top: 7px;
+  padding: 3.5rem;
+}
+
 .canvas-container {
     flex: 4;
   position: relative;
